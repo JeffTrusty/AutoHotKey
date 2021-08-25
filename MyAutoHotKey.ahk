@@ -4,7 +4,7 @@
 SendMode Input ; Recommended for new scripts due to its superior speed and reliability
 
 #Include MS4000.ahk
-
+SetTitleMatchMode,2
 return ; nothing to do in the main part of the script
 
 ; === Use the zoom button to scroll ===
@@ -81,7 +81,8 @@ MsNatural4000_Favorites2:
     return
 
 MsNatural4000_Favorites3:
-    MsgBox Favorites 3
+    Sendraw, tarbaby1
+    Send, {enter}
     return
 
 MsNatural4000_Favorites4:
@@ -96,37 +97,55 @@ MsNatural4000_Favorites5:
 
 #c:: Run Chrome.exe
 
-; Lock workstation
-AppsKey & l::DllCall("user32.dll\LockWorkStation")
-
-; Windows-G Google search of highlighted text
+;Google search of highlighted text
 #g::
 {
-Send, ^c
-Sleep 50
-Run, https://www.google.com/search?q=%clipboard%
-Return
+    Send, ^c
+    Sleep 50
+    Run, https://www.google.com/search?q=%clipboard%
+    Return
 }
 
-;Browser_Home::
-;Browser_Search::
+
+; Lock workstation
+; AppsKey::DllCall("user32.dll\LockWorkStation")
+
+Browser_Home::
+If WinActive("America First Credit Union")
+    {
+        Sendraw, 3422995
+        Send, {Enter}
+        Sleep 400
+        Sendraw, Sun25Day!
+        Send, {Enter}
+    }
+    Return
+
+
+Browser_Search::
+If WinActive("America First Credit Union")
+    {
+        Send, 3623840
+        Send, {Enter}
+        Sleep 400
+        Sendraw, tarbaby1
+        Send, {Enter}
+    }
+    Return
+
 
 Launch_Mail::
-LoopCount := 3
-Y := 0
-while Y < LoopCount
-{
-MsgBox,, Pause,Pausing,2
-Y++
-sleep 3000
-}
-Return
+    DllCall("user32.dll\LockWorkStation")
+    Return
+
+::lorem::Remember, a Jedi can feel the Force flowing through him. You mean it controls your actions? Partially. But it also obeys your commands.
+
 
 ; when I type j@ AHK will type my email address
 :*:j@::jeff.trusty@gmail.com ; *=don't require a white-space character (tab, space, return)
 ;:or:j@::jeff.trusty@gmail.com ; place options between the starting colons. o=alltrim of the replacement text, r=don't interprupt special keys (!^#+), *=don't require a white-space Character (tab, space, return)
 
-:*:@cl::console.log();
+;:*:@cl::console.log();
 
 
 ; encrypt AHK files
@@ -143,6 +162,19 @@ Return
 
 ;  # = Windows Key, ^ = Ctrl, ! = Alt, < = Left-Alt, > = Right-Alt, + = Shift, & combines mouse and keyboard
 
+; Get currently active window title
+#w::
+{
+WinGetTitle, Title, A
+MsgBox,, The active window is: %Title% ,, 4
+Return
+}
+
+; If in JavaScript file
+#IfWinActive, .js
+    :*:@cl::Console.Log("");
+    return
+#If
 
 ; If in Excel
 #IfWinActive,, xls
