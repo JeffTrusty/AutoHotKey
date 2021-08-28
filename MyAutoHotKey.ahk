@@ -31,6 +31,14 @@ MsNatural4000_KeyUp:
     ScrollDir := 0
     SetTimer, DoScroll, Off
     return
+
+MsNatural4000_BrowserForward:
+    Send, ^{Tab}
+    return
+MsNatural4000_BrowserBack:
+    Send, +^{Tab}
+    return
+
 ; ======
 
 ; === Example of using modifiers while pressing a button ===
