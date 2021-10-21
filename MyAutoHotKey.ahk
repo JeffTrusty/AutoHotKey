@@ -4,6 +4,8 @@
 SendMode Input ; Recommended for new scripts due to its superior speed and reliability
 
 #Include MS4000.ahk
+SetCapsLockState, alwaysoff
+SetNumLockState, AlwaysOn
 SetTitleMatchMode,2
 return ; nothing to do in the main part of the script
 
@@ -32,13 +34,6 @@ MsNatural4000_KeyUp:
     SetTimer, DoScroll, Off
     return
 
-MsNatural4000_BrowserForward:
-    Send, ^{Tab}
-    return
-MsNatural4000_BrowserBack:
-    Send, +^{Tab}
-    return
-
 ; ======
 
 ; === Example of using modifiers while pressing a button ===
@@ -54,7 +49,8 @@ MsNatural4000_MyFavorites:
     }
 
     if MsNatural4000.keyModifiers.Fn {
-        MsgBox "My Favorites Button while Fn-lock is Enabled"
+        Send, Dr@g0n{Enter}
+        Return
     }
 
     return
@@ -79,31 +75,45 @@ MsNatural4000_NumpadRightBracket:
 
 ; === Use favorites buttons ===
 MsNatural4000_Favorites1:
-    Sendraw, Sun25Day!
-    Send, {enter}
+    Run, C:\Users\jeff_\OneDrive\Documents\AFCU.xlsm
     return
 
 MsNatural4000_Favorites2:
-    Sendraw, Dr@g0n
-    Send, {enter}
+    Run, C:\Users\jeff_\OneDrive\Documents\Austin Hours.xlsx
     return
 
 MsNatural4000_Favorites3:
-    Sendraw, tarbaby1
-    Send, {enter}
+    Run, C:\Users\jeff_\OneDrive\Documents\Milage.xlsx
     return
 
 MsNatural4000_Favorites4:
-    MsgBox Favorites 4
+    Run, C:\Users\jeff_\OneDrive\Documents\PowerConsumption.xlsx
     return
 
 MsNatural4000_Favorites5:
     Reload
+
+MsNatural4000_BrowserForward:
+    Send, ^{Tab}
+    return
+MsNatural4000_BrowserBack:
+    Send, +^{Tab}
+    return
 ; ======
 
 #n:: Run Notepad.exe
 
 #c:: Run Chrome.exe
+
+; Alt-m Display mouse position relative to active application
+!m::
+{
+    xpos=0
+    ypos=0
+    MouseGetPos, xpos, ypos
+    MsgBox,, Mouse Position, Mouse Position X: %xpos% Y: %ypos%, % 5
+    return
+}
 
 ;Google search of highlighted text
 #g::
@@ -117,6 +127,28 @@ MsNatural4000_Favorites5:
 
 ; Lock workstation
 ; AppsKey::DllCall("user32.dll\LockWorkStation")
+; Display AHK info
+
+AppsKey::
+MsgBox,,AHK Info, % "Web-Home`t My AFCU Login`n"
+. "Search`t AFCU Login`n"
+. "Mail`t Lock computer`n"
+. "MyFavorites`t Safe In Cloud Password`n"
+. "1`t AFCU Excel Document`n"
+. "2`t Austin Excel Document`n"
+. "3`t Milage Excel Document`n"
+. "3`t PowerConsumption Excel Document`n"
+. "5`t Reload AHK`n"
+. "Win-c`t Run Chrome`n"
+. "Win-g`t Copy highlighted text and do a Google search on it`n"
+. "Win-n`t Run Notepad`n"
+. "Alt-m`t Display mouse position`n"
+. "Ctrl-1`t Disable screen saver`n"
+. "lorem`t Types:`n`tRemember, a Jedi can feel the Force flowing through him.`n`tYou mean it controls your actions?`n`t Partially. But it also obeys your commands.`n"
+. "@gm`t Types: my Gmail address`n"
+. "@op`t Types: my Optum address`n"
+. "@cl`t Types: console.log()`n", % 10
+    return
 
 Browser_Home::
 If WinActive("America First Credit Union")
@@ -150,10 +182,11 @@ Launch_Mail::
 
 
 ; when I type j@ AHK will type my email address
-:*:j@::jeff.trusty@gmail.com ; *=don't require a white-space character (tab, space, return)
+:*:@gm::jeff.trusty@gmail.com ; *=don't require a white-space character (tab, space, return)
+:*:@op::jeff.trusty@optum.com ; *=don't require a white-space character (tab, space, return)
 ;:or:j@::jeff.trusty@gmail.com ; place options between the starting colons. o=alltrim of the replacement text, r=don't interprupt special keys (!^#+), *=don't require a white-space Character (tab, space, return)
 
-;:*:@cl::console.log();
+:*:@cl::console.log(````);{Left}{Left}{Left}
 
 
 ; encrypt AHK files
@@ -178,9 +211,25 @@ MsgBox,, The active window is: %Title% ,, 4
 Return
 }
 
+;WFH, so prevent screen saver
+;Ctrl-1 Move mouse position every minute to prevent screen saver
+^1::
+MsgBox,,ScreenSaver, Screen Saver Disabled, % 2
+CoordMode, Mouse, Screen
+Loop
+{
+    ; Move mouse
+    MouseMove, 1, 1, 0, R
+    ; Replace mouse to its original location
+    MouseMove, -1, -1, 0, R
+    ; Wait before moving the mouse again
+    Sleep, 600000
+}
+;return
+
 ; If in JavaScript file
 #IfWinActive, .js
-    :*:@cl::Console.Log("");
+    ::cl::console.log("");{Left}{Left}{Left}
     return
 #If
 
@@ -273,3 +322,17 @@ Return
 
 
 }
+;Ctrl-1 Move mouse position every minute to prevent screen saver
+^1::
+MsgBox,,ScreenSaver, Screen Saver Disabled, % 2
+CoordMode, Mouse, Screen
+Loop
+{
+    ; Move mouse
+    MouseMove, 1, 1, 0, R
+    ; Replace mouse to its original location
+    MouseMove, -1, -1, 0, R
+    ; Wait before moving the mouse again
+    Sleep, 600000
+}
+;return
