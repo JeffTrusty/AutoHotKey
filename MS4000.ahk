@@ -43,7 +43,7 @@ class TMsNatural4000
                                    , 0x0108020000000000: "MsNatural4000_F12_Flock_disabled"
                                    , 0x0124020000000000: "MsNatural4000_BrowserBack"
                                    , 0x0125020000000000: "MsNatural4000_BrowserForward"
-                                   , 0x0123020000000000: "MsNatural4000_BrowserHome"
+                                   , 0x0417000000000000: "MsNatural4000_BrowserHome"
                                    , 0x0121020000000000: "MsNatural4000_BrowserSearch"
                                    , 0x018A010000000000: "MsNatural4000_LaunchMail"
                                    , 0x01E2000000000000: "MsNatural4000_VolumeMute"

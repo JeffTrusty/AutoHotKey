@@ -1,156 +1,74 @@
-#NoEnv ; Recommended for performance and compatibility with future AutoHotkey releases.
-#Persistent ; script will stay running after the auto-execute section (top part of the script) completes
-#SingleInstance Force ; Replaces the old instance of this script automatically
-SendMode Input ; Recommended for new scripts due to its superior speed and reliability
+#Requires Autohotkey v1.1.36+ 64-Bit
+#Include C:\Development\AHK\startupDirectives.ahk ; default settings
+; #Include C:\Development\AHK\MS4000.ahk  ; Hooks for MS 4000 keyboard
+; #Include C:\Development\AHK\MS-LXM-1000.ahk  ; Hooks for MS LXM-1000 keyboard
+; #Include C:\Development\AHK\MyMS4000Keys.ahk
+; #Include C:\Development\AHK\AppsKey.ahk
+IfWinNotExist, NoScreenLock.ahk
+    Run, C:\Development\AHK\NoScreenLock.ahk
+IfWinNotExist, AHKScriptHub.ahk
+    Run, C:\Development\AHK\AHKScriptHub.ahk
+sleep, 2000 ; wait 2 seconds
+IfWinNotExist, AHKHotkeyStringLookup.ahk
+    Run, C:\Development\AHK\AHKHotkeyStringLookup.ahk
+Variables:
+MSID := "jtrusty"
+PrimaryPassword := "jjt-083731214900"
+Return
 
-#Include MS4000.ahk
-SetCapsLockState, alwaysoff
-SetNumLockState, AlwaysOn
-SetTitleMatchMode,2
-return ; nothing to do in the main part of the script
 
-; === Use the zoom button to scroll ===
-DoScroll:
-    if (ScrollDir = 1)
-        SendInput, {WheelUp}
-    else
-        SendInput, {WheelDown}
-    return
+; Control-Shift-2: ; Move applications to left screen
+; ^+2:: ;Move applications to left screen
+; {
+;     WinGetPos,X,Y,,,SimpleSpy - the-Automator.com
+;     if (X!=0) {
+;         WinMove, SimpleSpy - the-Automator.com,,-500, 10
+;         WinRestore, SimpleSpy - the-Automator.com
+;     }
+;     WinGetPos,X,Y,,,Window Spy
+;     if (X!=0) {
+;         WinMove, Window Spy,,-380, 290
+;         WinRestore, Window Spy
+;     }
+;     WinGetPos,X,Y,,,ahk_exe EXCEL.EXE
+;     if (X!=0) {
+;         WinMove, ahk_exe EXCEL.EXE,,-2560, 50
+;         WinRestore, ahk_exe EXCEL.EXE
+;     }
+;     WinGetPos,X,Y,,,ahk_exe Code.exe
+;     if (X!=0) {
+;         WinMove, ahk_exe Code.exe,,-2475, 100
+;         WinRestore, ahk_exe Code.exe
+;     }
 
-MsNatural4000_ZoomDown:
-    ScrollDir := 2
-    GoSub, DoScroll
-    SetTimer, DoScroll, 80
-    return
+;     ; MsgBox, % X
+;     Return
+; }
 
-MsNatural4000_ZoomUp:
-    ScrollDir := 1
-    GoSub, DoScroll
-    SetTimer, DoScroll, 80
-    return
-
-MsNatural4000_KeyUp:
-    ScrollDir := 0
-    SetTimer, DoScroll, Off
-    return
-
-; ======
-
-; === Example of using modifiers while pressing a button ===
-MsNatural4000_MyFavorites:
-    if MsNatural4000.keyModifiers.Shift {
-        MsgBox Shift and MyFavorites button
-        return
+Control_Modifiers:
+^1:: ; Open AFCU.xlsm
+    If WinActive(ahk_exe EXCEL.EXE)
+    {
+        SendRaw, ^1
     }
-
-    if MsNatural4000_keyModifiers.LCtrl and MsNatural4000.keyModifiers.RCtrl {
-        MsgBox LeftCtrl+RightCtrl and MyFavorites button
-        return
+    Else
+    {
+        Run, C:\Users\jeff_\OneDrive\Documents\AFCU.xlsm
     }
+    return
 
-    if MsNatural4000.keyModifiers.Fn {
-        Send, Dr@g0n{Enter}
-        Return
+^2:: ; Open Austin.xls
+    If WinActive(ahk_exe EXCEL.EXE)
+    {
+        Send, ^2
     }
-
-    return
-; ======
-
-; === Map extra numpad's keys to their ordinary functionality ===
-; numpad "="
-MsNatural4000_NumpadEqual:
-    Send {=}
+    Else
+    {
+        Run, C:\Users\jeff_\OneDrive\Documents\Austin Hours.xlsx
+    }
     return
 
-; numpad "("
-MsNatural4000_NumpadLeftBracket:
-    Send {(}
-    return
-
-; numpad ")"
-MsNatural4000_NumpadRightBracket:
-    Send {)}
-    return
-; ======
-
-; === Use favorites buttons ===
-MsNatural4000_Favorites1:
-    Run, C:\Users\jeff_\OneDrive\Documents\AFCU.xlsm
-    return
-
-MsNatural4000_Favorites2:
-    Run, C:\Users\jeff_\OneDrive\Documents\Austin Hours.xlsx
-    return
-
-MsNatural4000_Favorites3:
-    Run, C:\Users\jeff_\OneDrive\Documents\Milage.xlsx
-    return
-
-MsNatural4000_Favorites4:
-    Run, C:\Users\jeff_\OneDrive\Documents\PowerConsumption.xlsx
-    return
-
-MsNatural4000_Favorites5:
-    Reload
-
-MsNatural4000_BrowserForward:
-    Send, ^{Tab}
-    return
-MsNatural4000_BrowserBack:
-    Send, +^{Tab}
-    return
-; ======
-
-#n:: Run Notepad.exe
-
-#c:: Run Chrome.exe
-
-; Alt-m Display mouse position relative to active application
-!m::
-{
-    xpos=0
-    ypos=0
-    MouseGetPos, xpos, ypos
-    MsgBox,, Mouse Position, Mouse Position X: %xpos% Y: %ypos%, % 5
-    return
-}
-
-;Google search of highlighted text
-#g::
-{
-    Send, ^c
-    Sleep 50
-    Run, https://www.google.com/search?q=%clipboard%
-    Return
-}
-
-
-; Lock workstation
-; AppsKey::DllCall("user32.dll\LockWorkStation")
-; Display AHK info
-
-AppsKey::
-MsgBox,,AHK Info, % "Web-Home`t My AFCU Login`n"
-. "Search`t AFCU Login`n"
-. "Mail`t Lock computer`n"
-. "MyFavorites`t Safe In Cloud Password`n"
-. "1`t AFCU Excel Document`n"
-. "2`t Austin Excel Document`n"
-. "3`t Milage Excel Document`n"
-. "3`t PowerConsumption Excel Document`n"
-. "5`t Reload AHK`n"
-. "Win-c`t Run Chrome`n"
-. "Win-g`t Copy highlighted text and do a Google search on it`n"
-. "Win-n`t Run Notepad`n"
-. "Alt-m`t Display mouse position`n"
-. "Ctrl-1`t Disable screen saver`n"
-. "lorem`t Types:`n`tRemember, a Jedi can feel the Force flowing through him.`n`tYou mean it controls your actions?`n`t Partially. But it also obeys your commands.`n"
-. "@gm`t Types: my Gmail address`n"
-. "@op`t Types: my Optum address`n"
-. "@cl`t Types: console.log()`n", % 10
-    return
-
-Browser_Home::
+^3:: ;Jeff AFCU login
 If WinActive("America First Credit Union")
     {
         Sendraw, 3422995
@@ -161,8 +79,7 @@ If WinActive("America First Credit Union")
     }
     Return
 
-
-Browser_Search::
+^4:: ;Sherry AFCU login
 If WinActive("America First Credit Union")
     {
         Send, 3623840
@@ -174,20 +91,142 @@ If WinActive("America First Credit Union")
     Return
 
 
-Launch_Mail::
-    DllCall("user32.dll\LockWorkStation")
+
+^0:: ; Reset Ctrl, Alt, Shift state and reload AHK script
+{
+    Send, {Alt Up}
+    Send, {Ctrl Up}
+    Send, {Shift Up}
+    Send, {LWinUp}
+    Reload, 0
+    Return
+}
+
+ControlShift_Modifiers:
+^+a:: ; Run Move Active Window to primary screen
+{
+    ; Run C:\Development\AHK\ShowActiveWindow.ahk
+    ; Return
+    MouseGetPos, x, y
+    WinMove A,, %x%, %y%
+    Return
+}
+
+^+d:: ;Safe In Cloud master password
+    Send, Dr@g0n{Enter}
     Return
 
-::lorem::Remember, a Jedi can feel the Force flowing through him. You mean it controls your actions? Partially. But it also obeys your commands.
+^+b:: ; Block Comment based on running application and title of file being edited
+If WinActive("ahk_exe Ssms.exe")
+{
+   Send, --*/ Comment:{Enter}{Enter}{Enter}{Enter}--Commit{Enter}--RollBack{Enter}--*/
+   Return
+}
+If WinActive("ahk_exe Code.exe") and WinGetTitle, Title, .ahk
+{
+   Send, */ Comment:    */
+   Return
+}
+If WinActive("ahk_exe Code.exe") and WinGetTitle, Title, .js
+{
+   Send, */ Comment:    */
+   Return
+}
+If WinActive("ahk_exe Code.exe") and WinGetTitle, Title, .html
+{
+   Send, <!-- Comment: -->
+   Return
+}
+If WinActive("ahk_exe Code.exe") and WinGetTitle, Title, .css
+{
+   Send, */ Comment:    */
+   Return
+}
+Return
 
+^+m::
+{
+    MouseGetPos, x, y
+    WinMove A,, %x%, %y%
+    Return
+}
 
-; when I type j@ AHK will type my email address
-:*:@gm::jeff.trusty@gmail.com ; *=don't require a white-space character (tab, space, return)
-:*:@op::jeff.trusty@optum.com ; *=don't require a white-space character (tab, space, return)
-;:or:j@::jeff.trusty@gmail.com ; place options between the starting colons. o=alltrim of the replacement text, r=don't interprupt special keys (!^#+), *=don't require a white-space Character (tab, space, return)
+^!r:: ; Ctrl-Alt-r run macro recorder
+{
+    Run "C:\Development\AHK\AHK-Recorder.ahk"
+    Return
+}
 
-:*:@cl::console.log(````);{Left}{Left}{Left}
+^+q:: ; Run AHK-Toolkit
+    {
+        Run "C:\Development\AHK\AHK-ToolKit.exe"
+        ;Run "C:\Development\AHK\Quick AHKv2 Converter\Quick AHKv2 Converter.exe"
+        Return
+    }
 
+F13::MsgBox "F13"
+F14::MsgBox "F14"
+F15::MsgBox "F15"
+
+Windows_Modifiers:
+#c:: ;Run Chrome Browser
+    {
+        Run Chrome.exe
+        Return
+    }
+
+; ControlE: ; Edit AHK Script
+; ^e::edit ; Edit AHK Script
+
+#g:: ;Google search of highlighted text
+{
+    Send, ^c
+    Sleep 50
+    Run, https://www.google.com/search?q=%clipboard%
+    Return
+}
+
+#n:: ;Run Notepad
+    {
+        Run Notepad.exe c:\temp.txt
+        Return
+    }
+
+#o:: ;Run Obsidian
+    {
+        Run C:\Users\jeff_\AppData\Local\Obsidian\Obsidian.exe
+        Return
+    }
+
+Windows_W: ; Get currently active window title
+#w:: ; Get currently active window title
+    {
+        WinGetTitle, Title, A
+        MsgBox,, The active window is: %Title% ,, 4
+        Return
+    }
+
+; #^!+W:: ; Office key
+; msgbox "Office key"
+; ; Send ^!+W
+; return
+
+#+F21::Run, https://www.google.com ;Search button on lxm-1000
+
+#+s::MsgBox "Snipping Key" ; on lxm-1000
+#Tab::MsgBox "Win+Tab or Next to Snipping Key" ; on lxm-1000
+; #l::MsgBox "Lock Button" ; on lxm-1000
+
+Alt_Modifiers:
+Alt_M: ;Display mouse position relative to active application
+!m:: ;Alt-M: Display mouse position relative to active application
+{
+    xpos=0
+    ypos=0
+    MouseGetPos, xpos, ypos
+    MsgBox,, Mouse Position, Mouse Position X: %xpos% Y: %ypos%, % 5
+    return
+}
 
 ; encrypt AHK files
 ; youtube.com/watch?v=bYIuZ1u3Ux0
@@ -203,136 +242,32 @@ Launch_Mail::
 
 ;  # = Windows Key, ^ = Ctrl, ! = Alt, < = Left-Alt, > = Right-Alt, + = Shift, & combines mouse and keyboard
 
-; Get currently active window title
-#w::
-{
-WinGetTitle, Title, A
-MsgBox,, The active window is: %Title% ,, 4
-Return
-}
+HotStrings:
+:*:@gm::jeff.trusty@gmail.com ; *=don't require a white-space character (tab, space, return)
+:*:@op::jeff.trusty@optum.com ; *=don't require a white-space character (tab, space, return)
+:*:@ho::jeff_trusty@hotmail.com ; *=don't require a white-space character (tab, space, return)
+:*:@cl::console.log(````);{Left}{Left}{Left}
+:*:jjt::jjt-0837{enter}
+::lorem::Remember, a Jedi can feel the Force flowing through him. You mean it controls your actions? Partially. But it also obeys your commands.
 
-;WFH, so prevent screen saver
-;Ctrl-1 Move mouse position every minute to prevent screen saver
-^1::
-MsgBox,,ScreenSaver, Screen Saver Disabled, % 2
-CoordMode, Mouse, Screen
-Loop
-{
-    ; Move mouse
-    MouseMove, 1, 1, 0, R
-    ; Replace mouse to its original location
-    MouseMove, -1, -1, 0, R
-    ; Wait before moving the mouse again
-    Sleep, 600000
-}
-;return
-
-; If in JavaScript file
-#IfWinActive, .js
-    ::cl::console.log("");{Left}{Left}{Left}
-    return
-#If
-
-; If in Excel
-#IfWinActive,, xls
-{
-    ; Todays date
-    ^+t::
-    SendInput, %A_YYYY%-%A_MM%-%A_DD%
-    Send {Enter}
-    Return
-
-    ; First of current year
-    ^+y::
-    FormatTime, boyDate,%A_YYYY%0101, MM/dd/yyyy
-    ; MsgBox,, FirstOfYearDate, %boyDate%, 5
-    Send, %boyDate%
-    Return
-
-    ; Last date of current year
-    ^+r::
-    FormatTime, eoyDate,%A_YYYY%1231, MM/dd/yyyy
-    ; MsgBox,, EndOfYearDate, %eoyDate%, 5
-    Send, %eoyDate%
-    Return
-
-
-    ; First of current month
-    ^+m::
-    FormatTime, bomDate,%A_YYYY%%A_MM%01, MM/dd/yyyy
-    ; MsgBox,, FirstOfMonthDate, %bomDate%, 5
-    Send, %bomDate%
-    Return
-
-    ; End of current Month
-    ^+h::
-    EOM := endOfMonth(%A_YYYY%-%A_MM%-%A_DD%)
-    FormatTime, eomDate,%EOM%, MM/dd/yyyy
-    ; MsgBox,, EndOfMonthDate, %eomDate%, 5
-    Send, %eomDate%
-    Return
-
-    ; Yesterday
-    ^+NumpadSub::
-    yesterday := DateAdd(%A_NOW%,-1,"Days")
-    FormatTime, yesterday, % yesterday, MM/dd/yyyy
-    ; MsgBox,, YesterdaysDate, %yesterday%, 5
-    Send, %yesterday%
-    Return
-
-    ; Tomorrow
-    ^+NumpadAdd::
-    tomorrow := DateAdd(%A_NOW%,+1,"Days")
-    FormatTime, tomorrow, % tomorrow, MM/dd/yyyy
-    ; MsgBox,, tomorrowsDate, %tomorrow%, 5
-    Send, %tomorrow%
-    Return
-
-
-    endOfMonth(date)
+:R*?:dddd:: ;Today's date
     {
-        ; get current month and year
-        FormatTime, date, %date%, yyyyMM
-        StringRight, month, date, 2
-        FormatTime, year, %date%, yyyy
-        ; select first day of the following month
-        If month < 12
-        {
-            month++
-            If month < 10 ; add leading zero
-                month = 0%month%
-            date = %year%%month%01
-        }
-        Else
-        {
-            year++
-            date = %year%0101
-        }
-        ; select last day of actual month
-        date += -1, Days
-        ; return date
-        Return date
+        FormatTime, CurrentDateTime,, MMM-dd-yyyy
+        SendInput %CurrentDateTime%
+        return
     }
 
-    DateAdd(DateTime, Time, TimeUnits)
-    {
-        EnvAdd, DateTime, % Time, % TimeUnits
-        return DateTime
-    }
+;:or:j@::jeff.trusty@gmail.com ; place options between the starting colons. o=alltrim of the replacement text, r=don't interprupt special keys (!^#+), *=don't require a white-space Character (tab, space, return)
 
 
-}
-;Ctrl-1 Move mouse position every minute to prevent screen saver
-^1::
-MsgBox,,ScreenSaver, Screen Saver Disabled, % 2
-CoordMode, Mouse, Screen
-Loop
-{
-    ; Move mouse
-    MouseMove, 1, 1, 0, R
-    ; Replace mouse to its original location
-    MouseMove, -1, -1, 0, R
-    ; Wait before moving the mouse again
-    Sleep, 600000
-}
-;return
+::Fav1::VS Code
+::Fav2::Free Commander
+::Fav3::Obsidian
+::Ofc-D::OneDrive
+::Ofc-X::Excel
+::Ofc-N::OneNote
+::Ofc-O::Outlook
+::Ofc-P::PowerPoint
+::Ofc-T::Teams
+::Ofc-W::Word
+; ::Alt_F1::Bring up AHK HotString definitions

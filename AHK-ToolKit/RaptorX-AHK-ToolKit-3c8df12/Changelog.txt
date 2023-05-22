@@ -1,0 +1,45 @@
+Versioning:
+     Major.Minor.Fix-Build
+
+ Legend:
+==================
+    + Add
+    - Remove
+    ! Fix
+    * Change
+    ^ Update
+==================
+
+AHK-TK v0.8.7.3
+Date: Sun Oct 13 10:10:54 2013 -0400
+
+    Changes:
+
+    ! Fix Codet pop up not showing
+
+AHK-TK v0.8.7.2
+Date: Sun Oct 28 15:38:29 2012 +0100
+
+    Changes:
+
+    + Add LexAHK styles
+    + Add Folding logic
+
+    ^ Update scintilla wrapper to latest version
+
+AHK-TK v0.8.5.2
+Date: Tue Oct 23 02:01:30 2012 +0200
+
+    Changes:
+
+    * Change versioning
+    ^ Update scintilla wrapper to latest version
+    ^ Update code for new scintilla syntax
+
+    Todo:
+
+    + Add #ifwindow active functionality to hotkeys/hotstrings
+
+    ! Fix Append to exported hotkeys/hotstrings function
+
+    * Conditional download of AHK_L backup
