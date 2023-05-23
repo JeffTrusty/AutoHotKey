@@ -113,10 +113,12 @@ ControlShift_Modifiers:
 }
 
 ^+d:: ;Safe In Cloud master password
+{
     Send, Dr@g0n{Enter}
     Return
+}
 
-^+b:: ; Block Comment based on running application and title of file being edited
+/* ^+b:: ; Block Comment based on running application and title of file being edited
 If WinActive("ahk_exe Ssms.exe")
 {
    Send, --*/ Comment:{Enter}{Enter}{Enter}{Enter}--Commit{Enter}--RollBack{Enter}--*/
@@ -143,7 +145,7 @@ If WinActive("ahk_exe Code.exe") and WinGetTitle, Title, .css
    Return
 }
 Return
-
+ */
 ^+m::
 {
     MouseGetPos, x, y
