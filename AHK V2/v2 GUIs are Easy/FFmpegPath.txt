@@ -1,0 +1,9 @@
+C:\Program Files\ffmpeg\bin\ffmpeg.exe  v6.0
+
+
+
+"C:\Program Files\ffmpeg\bin\ffmpeg.exe" -y -i <InputFileName> -nostats <OutputFileName>
+
+
+
+"C:\Program Files\ffmpeg\bin\ffmpeg.exe" -y -i "H:\Jeff\Videos\Piss\d140-1.avi" -nostats "C:\StreamFab\YouTube\Video\d140-1.mp4"

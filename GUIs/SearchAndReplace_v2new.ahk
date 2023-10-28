@@ -1,4 +1,5 @@
-﻿#SingleInstance Force
+﻿#Requires Autohotkey v2+
+#SingleInstance Force
 OutputFolder := "C:\Development\AHK\GUIs\"
 
 
@@ -67,3 +68,29 @@ GuiClose:
 } ; Added bracket in the end
 
 
+/*
+
+Tabbed display, 4 tabs Main, Servers, Extentions, FilesFound
+
+MainTab:
+
+Search For: InputBox
+Replace With: InputBox
+Find Button  (Reads servers.txt and extentions.txt, then builds FilesFoundTab)
+
+ServersTab:
+List of servers that is saved to servers.txt
+SaveList Button
+
+ExtentionsTab:
+List of extentions to search that is saved to extentions.txt
+SaveList Button
+
+FilesFoundTab:
+List of files found
+Create Backup: CheckBox
+Replace Button (Replaces SearchFor with ReplaceWith)
+
+
+
+*/

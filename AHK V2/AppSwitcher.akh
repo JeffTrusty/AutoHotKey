@@ -1,0 +1,20 @@
+#Requires Autohotkey v2.0+ 64-Bit
+#SingleInstance Force
+
+F2::ActivateGroup("Code.exe")
+
+ActivateGroup(exeFile := "code.exe")
+{
+	SplitPath(exeFile,,,,&Name)
+	if !WinExist("ahk_exe " exeFile)
+	{
+		Run exeFile
+		Winwait "ahk_exe " exeFile
+		GroupAdd Name "Group", "ahk_class " WinGetClass("ahk_exe " exeFile)
+	}
+	else
+	{
+		GroupAdd Name "Group", "ahk_class " WinGetClass("ahk_exe " exeFile)
+		GroupActivate Name "Group", "R"
+	}
+}

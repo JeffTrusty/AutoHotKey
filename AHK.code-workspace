@@ -4,7 +4,7 @@
       "path": "."
     },
     {
-      "path": "U:\\Development\\TipsAndTricks"
+      "path": "../TipsAndTricks"
     }
   ],
   "settings": {
@@ -28,6 +28,7 @@
       "activityBarBadge.foreground": "#e7e7e7",
       "commandCenter.border": "#e7e7e799"
     },
-    "peacock.color": "#007fff"
+    "peacock.color": "#007fff",
+    "powershell.cwd": "c:\\Development\\AHK"
   }
 }
