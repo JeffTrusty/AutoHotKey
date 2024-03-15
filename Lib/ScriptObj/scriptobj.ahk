@@ -105,7 +105,7 @@ class script
 		catch e
 			throw {code: ERR_NOCONNECT, msg: e.message}
 
-		Progress, 50, 50/100, % "Checking for updates", % "Updating"
+		Progress, 50, 2, % "Checking for updates", % "Updating"
 
 		; Download remote version file
 		http.Open("GET", vfile, true)

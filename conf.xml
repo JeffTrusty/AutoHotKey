@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AHK-Toolkit version="0.17.2" alwaysontop="0">
 	<Options>
-		<Startup ssi="0" sww="0" smm="0" cfu="1">
+		<Startup ssi="0" sww="1" smm="1" cfu="1">
 		</Startup>
 		<MainKey ctrl="1" alt="0" shift="1" win="0">F</MainKey>
-		<SuspWndList>
-		</SuspWndList>
+		<SuspWndList></SuspWndList>
 		<Codet status="1" mode="1">
 			<Pastebin current="AutoHotkey.net">
 				<AutoHotkey private="0" nick="">
@@ -25,14 +24,14 @@ if exitapp gosub goto ifequal ifexist ifgreater ifgreaterorequal ifinstring ifle
 		<CMDHelper global="1" sci="1" forum="1" tags="1">
 			<HelpKey ctrl="1" alt="0" shift="0" win="0">F1</HelpKey>
 			<TagsKey ctrl="1" alt="0" shift="0" win="0">F2</TagsKey>
-			<HelpPath online="1">C:\Program Files\AutoHotkey\AutoHotkeyU32.chm</HelpPath>
+			<HelpPath online="1">C:\Program Files\AutoHotkey\v2\AutoHotkey.chm</HelpPath>
 		</CMDHelper>
-		<LiveCode linewrap="1" highlighting="1" url="1" symbols="0" snplib="1">
-			<RCPaths current="Unicode64v1">
+		<LiveCode linewrap="0" highlighting="1" url="1" symbols="0" snplib="1">
+			<RCPaths current="Unicode64v2">
 				<Unicode32v1>C:\Program Files\AutoHotkey\AutoHotkeyU32.exe</Unicode32v1>
 				<Unicode64v1>C:\Program Files\AutoHotkey\AutoHotkeyU64.exe</Unicode64v1>
-				<Unicode32v2>C:\Program Files\AutoHotkey\v2\AutoHotkey32.exe</Unicode32v2>
-				<Unicode64v2>C:\Program Files\AutoHotkey\v2\AutoHotkey64.exe</Unicode64v2>
+				<Unicode32v2>C:\Program Files\AutoHotkey\v2\AutoHotkey64.exe</Unicode32v2>
+				<Unicode64v2>C:\Program Files\AutoHotkey\v2\AutoHotkey64_UIA.exe</Unicode64v2>
 			</RCPaths>
 			<SnippetLib current="Example Snippets">
 				<Group name="Example Snippets" count="4">

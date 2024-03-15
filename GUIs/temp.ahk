@@ -1,14 +1,6 @@
-﻿#Requires Autohotkey v1.1.31.01+
+﻿#Requires Autohotkey v2.0+
 
-; SearchPath := "U:\JeffAudioBooks"
-SearchPath := "\\TrustyServer\Media\JeffAudioBooks"
-; SetWorkingDir U:\JeffAudioBooks ; worked
-SetWorkingDir %SearchPath%
+A_Clipboard := A_AppData
 
-FileNameFilter := "*.m4b"
 
-Loop Files, %FileNameFilter%, R
-{
-	Msgbox %A_LoopFileFullPath%
-}
-; MsgBox %A_WorkingDir%
+

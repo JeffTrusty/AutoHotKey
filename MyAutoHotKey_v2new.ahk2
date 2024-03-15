@@ -2,6 +2,7 @@
 Persistent ; script will stay running after the auto-execute section (top part of the script) completes
 #SingleInstance Force ; Replaces the old instance of this script automatically
 #UseHook
+#include <clipster>
 InstallKeybdHook()
 SendMode("Input") ; Recommended for new scripts due to its superior speed and reliability
 SetWorkingDir(A_ScriptDir) ; Ensure consistent working dir.
@@ -51,14 +52,14 @@ Variables:
             WinMove, ahk_exe Code.exe,,-2475, 100
             WinRestore, ahk_exe Code.exe
         }
-    
+
         ; MsgBox, % X
         Return
     }
-    
-    */
 
-    MButton:: ; Middle Mouse Button move active window to mouse position
+    */
+Mouse_Controls:
+    WheelLeft:: ; Wheel-Left Mouse Button move active window to mouse position
     {
         ; Run C:\Development\AHK\ShowActiveWindow.ahk
         ; Return
@@ -67,7 +68,28 @@ Variables:
         Return
     }
 
+    MButton:: ; Middle Mouse Button move active window to mouse position
+    {
+        SendInput '31214900'
+        ; Run("C:\Development\AHK\PopupMenu\DisplayPopupMenuV2.ahk")
+    }
+
+    ::Wheel-Right::Quick Access PopupQuick Access Popup
+
 Control_Modifiers:
+
+    $^[:: ; Wrap highlighted text with []  ** DOES NOT WORK AS EXPECTED IN VS CODE **
+    {
+        oldClip := ClipboardAll() ; Save the existing clipboard
+        A_Clipboard := "" ; clear the clipboard
+        Send "^c" ; copy to the clipboard whatever is highlighted if anything
+
+        SendText("[")
+        Send("^v")      ; paste what was highlighted
+        SendText("]")
+        A_Clipboard := oldClip ; Restore the clipboard
+
+    }
 
     ; #HotIf WinActive('- Notepad') ; Only run if Notepad
     ; ^F1::
@@ -94,7 +116,7 @@ Control_Modifiers:
         If WinActive("America First Credit Union") {
             Send("{Raw}3422995")
             Send("{Enter}")
-            Sleep(400)
+            Sleep(2000)
             Send("{Raw}Sun25Day!")
             Send("{Enter}")
             Return
@@ -106,7 +128,7 @@ Control_Modifiers:
         If WinActive("America First Credit Union") {
             Send(3623840)
             Send("{Enter}")
-            Sleep(400)
+            Sleep(2000)
             Send("{Raw}tarbaby1")
             Send("{Enter}")
             Return
@@ -118,7 +140,7 @@ Control_Modifiers:
         If WinActive("America First Credit Union") {
             Send(24238511)
             Send("{Enter}")
-            Sleep(400)
+            Sleep(2000)
             Send("{Raw}5Gjk3WvW77jb65H7w3hMmcCH")
             Send("{Enter}")
             Return
@@ -136,6 +158,18 @@ Control_Modifiers:
     }
 
 ControlShift_Modifiers:
+    ^+1:: ; Move applications to primary screen
+    {
+        WinMove(0, 40, 1885, 1010, "ahk_exe vivaldi.exe")
+        ; WinMove(500, 0, 1900, 1025, "- Files")
+        ; If WinActive("'ahk_class dopus.lister") {
+        WinMove(500, 0, 1900, 1025, "ahk_class dopus.lister ahk_exe dopus.exe")
+        ; }
+        If WinActive('ahk_exe EXCEL.EXE') {
+            WinMove(1450, 350, 1100, 990, "ahk_exe EXCEL.EXE")
+        }
+    }
+
     ^+a:: ; Run Move Active Window to primary screen
     {
         ; Run C:\Development\AHK\ShowActiveWindow.ahk
@@ -151,7 +185,7 @@ ControlShift_Modifiers:
         Return
     }
 
-    ^+m::
+    ^+m:: ; Move active window to mouse position
     {
         MouseGetPos(&x, &y)
         WinMove(x, y, , , "A")
@@ -164,16 +198,32 @@ ControlShift_Modifiers:
         Return
     }
 
-    ^+q:: ; Run AHK-Toolkit
+    ^+t:: ; Run AHK-Toolkit
     {
-        Run("`"C:\Development\AHK\AHK-ToolKit.exe`"")
+        Run("C:\Development\AHK\AHK-ToolKit.exe")
         ;Run "C:\Development\AHK\Quick AHKv2 Converter\Quick AHKv2 Converter.exe"
         Return
     }
 
-    F13:: MsgBox("`"F13`"")
-    F14:: MsgBox("`"F14`"")
-    F15:: MsgBox("`"F15`"")
+    ^+v:: ; Ctrl-Shift-V paste last 3 clipboard items
+    {
+        Send("#v")
+        Sleep 100
+        Send("{Down}{Down}{Enter}")
+    }
+
+    F13:: ; Upper forward mouse button
+    {
+        MsgBox("Upper forward mouse button")
+    }
+    F14:: ; Upper middle mouse button
+    {
+        MsgBox("Upper middle mouse button")
+    }
+    F15:: ; Upper rear mouse button
+    {
+        MsgBox("Upper rear mouse button")
+    }
 
 Windows_Modifiers:
     #c:: ;Run Chrome Browser
@@ -182,8 +232,11 @@ Windows_Modifiers:
         Return
     }
 
-    ; ControlE: ; Edit AHK Script
-    ; ^e::Edit() ; Edit AHK Script
+    #e:: ;Run Directory Opus
+    {
+        Run("C:\Program Files\GPSoftware\Directory Opus\dopus.exe")
+        Return
+    }
 
     #g:: ;Google search of highlighted text
     {
@@ -255,6 +308,7 @@ HotStrings:
     :*:@ho::jeff_trusty@hotmail.com ; *=don't require a white-space character (tab, space, return)
     :*:@cl::console.log(````);{Left}{Left}{Left}
     :*:jjt::jjt-0837{enter}
+    :*:QAP::Quick Access Popup
     :SEK10*:/ahk::AutoHotKey
     ; { ; V1toV2: Added bracket
     ;     A_Clipboard:="AutoHotKey" ; *=don't require a white-space character (tab, space, return)
@@ -262,12 +316,12 @@ HotStrings:
     ;     Return
     ; } ; V1toV2: Added Bracket before hotkey or Hotstring
 
-    ::lorem::
-    { ; V1toV2: Added bracket
+    ::lorem:: ; Jedi Lorem
+    {
         A_Clipboard := "Remember, a Jedi can feel the Force flowing through him. You mean it controls your actions? Partially. But it also obeys your commands."
         Send "^v"
         Return
-    } ; V1toV2: Added Bracket before hotkey or Hotstring
+    }
 
     :R*?:dddd:: ;Today's date
     {
@@ -276,7 +330,7 @@ HotStrings:
         return
     }
 
-    ;:or:j@::jeff.trusty@gmail.com ; place options between the starting colons. o=alltrim of the replacement text, r=don't interprupt special keys (!^#+), *=don't require a white-space Character (tab, space, return)
+    ; ;:or:j@::jeff.trusty@gmail.com ; place options between the starting colons. o=alltrim of the replacement text, r=don't interprupt special keys (!^#+), *=don't require a white-space Character (tab, space, return)
 
     ::Fav1::VS Code
     ::Fav2::Azure Data Studio
