@@ -1,8 +1,8 @@
-﻿#MaxThreadsPerHotkey 5 ; allow same hotkey to be run while it is already running IE a hotkey to toggle something
+﻿#Requires AutoHotkey v2.0+
+#MaxThreadsPerHotkey 5 ; allow same hotkey to be run while it is already running IE a hotkey to toggle something
 Persistent ; script will stay running after the auto-execute section (top part of the script) completes
 #SingleInstance Force ; Replaces the old instance of this script automatically
 #UseHook
-#include <clipster>
 InstallKeybdHook()
 SendMode("Input") ; Recommended for new scripts due to its superior speed and reliability
 SetWorkingDir(A_ScriptDir) ; Ensure consistent working dir.
@@ -21,8 +21,8 @@ if !WinExist("NoScreenLock.ahk")
 ; if !WinExist("AHKScriptHub.ahk")
 ;     Run("C:\Development\AHK\AHKScriptHub.ahk")
 Sleep(2000) ; wait 2 seconds
-if !WinExist("AHKHotkeyStringLookup.ahk")
-    Run("C:\Development\AHK\AHKHotkeyStringLookup.ahk")
+; if !WinExist("AHKHotkeyStringLookup.ahk")
+;     Run("C:\Development\AHK\AHKHotkeyStringLookup.ahk")
 Variables:
     MSID := "jtrusty"
     PrimaryPassword := "jjt-083731214900"
@@ -309,7 +309,7 @@ HotStrings:
     :*:@cl::console.log(````);{Left}{Left}{Left}
     :*:jjt::jjt-0837{enter}
     :*:QAP::Quick Access Popup
-    :SEK10*:/ahk::AutoHotKey
+    :SEK10*:/ahk::AutoHotKey ; SE=SendEvent K10=KeyDelay 10ms
     ; { ; V1toV2: Added bracket
     ;     A_Clipboard:="AutoHotKey" ; *=don't require a white-space character (tab, space, return)
     ;     Send("^v")
