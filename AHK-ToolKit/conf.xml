@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<AHK-Toolkit version="0.21.9" alwaysontop="0">
+<AHK-Toolkit version="0.23.0" alwaysontop="0">
 	<Options>
-		<Startup ssi="1" sww="1" smm="1" cfu="1">
+		<Startup ssi="0" sww="1" smm="1" cfu="1">
 		</Startup>
 		<MainKey ctrl="0" alt="0" shift="0" win="1">`</MainKey>
-		<SuspWndList></SuspWndList>
+		<SuspWndList>
+		</SuspWndList>
 		<Codet status="1" mode="1">
 			<Pastebin current="AutoHotkey.net">
 				<AutoHotkey private="0" nick="">
@@ -26,7 +27,7 @@ if exitapp gosub goto ifequal ifexist ifgreater ifgreaterorequal ifinstring ifle
 			<TagsKey ctrl="1" alt="0" shift="0" win="0">F2</TagsKey>
 			<HelpPath online="1">C:\Program Files\AutoHotkey\v2\AutoHotkey.chm</HelpPath>
 		</CMDHelper>
-		<LiveCode linewrap="1" highlighting="1" url="1" symbols="0" snplib="0">
+		<LiveCode linewrap="1" highlighting="1" url="1" symbols="0" snplib="1">
 			<RCPaths current="Unicode64v2">
 				<Unicode32v1>C:\Program Files\AutoHotkey\v1.1.37.01\AutoHotkeyU32.exe</Unicode32v1>
 				<Unicode64v1>C:\Program Files\AutoHotkey\v1.1.37.01\AutoHotkeyU64.exe</Unicode64v1>

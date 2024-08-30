@@ -1,0 +1,9 @@
+ServerDescription, ServerName
+Prod DB Cluster, Prod-BOS-DB-Cls
+Prod DB Primary Node, WP000081494
+Prod DB Secondary Node, WP000081493
+Prod DB Tertiary Node, WP000081495
+Prod Report Cluster, Prod-Rpt-DB-Cls
+Prod Report Primary Node, WP000059060
+Prod Report DB Secondary Node, WP0000590??
+Prod Report DB Tertiary Node, WP0000590??

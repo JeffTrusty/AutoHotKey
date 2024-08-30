@@ -12,17 +12,22 @@ SetScrollLockState("AlwaysOff")
 SetTitleMatchMode(2)
 DetectHiddenWindows(true)
 CoordMode("Mouse", "Screen")
+TraySetIcon 'C:\Development\AHK\Jjt Avatar.png'
 A_crlf := "`r`n"
 
 if !WinExist("NoScreenLock.ahk")
     Run("C:\Development\AHK\NoScreenLock.ahk")
+if !WinExist("GetActivefilePath.ahk")
+    Run("C:\Development\AHK\GetActivePath\GetActivefilePath.ahk") ; Win-P
+if !WinExist("FlexiFinder.ahk")
+    Run("C:\Development\AHK\FlexiFinder\FlexiFinder.ahk") ; Win-F
 ; if !WinExist("DockWin.ahk")
-;     Run("C:\Development\AHK\DockWin.ahk")
+;     Run("C:\Development\AHK\Misc\DockWin.ahk")
 ; if !WinExist("AHKScriptHub.ahk")
-;     Run("C:\Development\AHK\AHKScriptHub.ahk")
-Sleep(2000) ; wait 2 seconds
+;     Run("C:\Development\AHK\Misc\AHKScriptHub.ahk")
+; Sleep(2000) ; wait 2 seconds
 ; if !WinExist("AHKHotkeyStringLookup.ahk")
-;     Run("C:\Development\AHK\AHKHotkeyStringLookup.ahk")
+;     Run("C:\Development\AHK\Misc\AHKHotkeyStringLookup.ahk")
 Variables:
     MSID := "jtrusty"
     PrimaryPassword := "jjt-083731214900"
@@ -61,8 +66,6 @@ Variables:
 Mouse_Controls:
     WheelLeft:: ; Wheel-Left Mouse Button move active window to mouse position
     {
-        ; Run C:\Development\AHK\ShowActiveWindow.ahk
-        ; Return
         MouseGetPos &x, &y
         WinMove(x, y, , , "A")
         Return
@@ -303,6 +306,8 @@ Alt_Modifiers:
     ;  # = Windows Key, ^ = Ctrl, ! = Alt, < = Left-Alt, > = Right-Alt, + = Shift, & combines mouse and keyboard
 
 HotStrings:
+    :*:.s1::-SqlInstance $SQL1
+    :*:.s2::-SqlInstance $SQL2
     :*:@gm::jeff.trusty@gmail.com ; *=don't require a white-space character (tab, space, return)
     :*:@op::jeff.trusty@optum.com ; *=don't require a white-space character (tab, space, return)
     :*:@ho::jeff_trusty@hotmail.com ; *=don't require a white-space character (tab, space, return)
@@ -310,12 +315,6 @@ HotStrings:
     :*:jjt::jjt-0837{enter}
     :*:QAP::Quick Access Popup
     :SEK10*:/ahk::AutoHotKey ; SE=SendEvent K10=KeyDelay 10ms
-    ; { ; V1toV2: Added bracket
-    ;     A_Clipboard:="AutoHotKey" ; *=don't require a white-space character (tab, space, return)
-    ;     Send("^v")
-    ;     Return
-    ; } ; V1toV2: Added Bracket before hotkey or Hotstring
-
     ::lorem:: ; Jedi Lorem
     {
         A_Clipboard := "Remember, a Jedi can feel the Force flowing through him. You mean it controls your actions? Partially. But it also obeys your commands."
@@ -343,3 +342,4 @@ HotStrings:
     ::Ofc-T::Teams
     ::Ofc-W::Word
     ; ::Alt_F1::Bring up AHK HotString definitions
+
