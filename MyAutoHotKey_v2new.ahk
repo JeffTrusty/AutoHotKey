@@ -138,7 +138,7 @@ Control_Modifiers:
         }
     } ; V1toV2: Added Bracket before hotkey or Hotstring
 
-    ^5:: ;Sherry AFCU login
+    ^5:: ;Austin AFCU login
     { ; V1toV2: Added bracket
         If WinActive("America First Credit Union") {
             Send(24238511)
@@ -150,6 +150,10 @@ Control_Modifiers:
         }
     } ; V1toV2: Added Bracket before hotkey or Hotstring
 
+    ^6:: ;BitWarden Password
+    {
+        send("{Raw}Suddenly706(metal(meat((")
+    }
     ^0:: ; Reset Ctrl, Alt, Shift state and reload AHK script
     {
         Send("{Alt Up}")
