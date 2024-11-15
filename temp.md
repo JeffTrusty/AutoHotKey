@@ -3,8 +3,7 @@
 
 
 
-
-
+the-automator.com/adosql
 
 
 
@@ -92,7 +91,16 @@ Jeff Tortilla soup
 Sherry
 
 New Golden Dragon
-Kung Po chicken for me and sweet and sour chicken for Travis
+Kung Po chicken for me and
+Sweet and sour chicken for Travis
+
+ABC Chinese
+Vegetable Kung Pao for Sherry
+Beef Broccoli for Austin
+Beef Broccoli for Travis
+Kung Pao Chicken for Candice
+
+
 
 Rancheritos
 Travis wants a crazy breakfast burrito with rice and beans
