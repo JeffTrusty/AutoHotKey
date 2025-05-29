@@ -29,6 +29,8 @@
       "commandCenter.border": "#e7e7e799"
     },
     "peacock.color": "#007fff",
-    "powershell.cwd": "c:\\Development\\AHK"
+    "powershell.cwd": "c:\\Development\\AHK",
+    "cSpell.words": ["hotstring", "hotstrings"]
   }
 }
+

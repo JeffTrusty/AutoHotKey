@@ -1,0 +1,17 @@
+Prd-App-DB-Cluster,ServerName 1
+Prd-Rpt-DB-Cluster,ServerName 2
+Prd-App-API-Server,ServerName 3
+Prod-App-UI-Server,ServerName 4
+Stg-App-DB-Cluster,ServerName 1
+Stg-Rpt-DB-Cluster,ServerName 2
+Stg-App-API-Server,ServerName 3
+Stg-App-UI-Server,ServerName 4
+Tst-App-DB-Cluster,ServerName 1
+Tst-Rpt-DB-Cluster,ServerName 2
+Tst-App-API-Server,ServerName 3
+Tst-App-UI-Server,ServerName 4
+Dev-App-DB-Cluster,ServerName 1
+Dev-Rpt-DB-Cluster,ServerName 2
+Dev-App-API-Server,ServerName 3
+Dev-App-UI-Server,ServerName 4
+

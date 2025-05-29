@@ -3,9 +3,8 @@
 	<Options>
 		<Startup ssi="0" sww="1" smm="1" cfu="1">
 		</Startup>
-		<MainKey ctrl="0" alt="0" shift="0" win="1">`</MainKey>
-		<SuspWndList>
-		</SuspWndList>
+		<MainKey ctrl="0" alt="0" shift="0" win="1">A</MainKey>
+		<SuspWndList></SuspWndList>
 		<Codet status="1" mode="1">
 			<Pastebin current="AutoHotkey.net">
 				<AutoHotkey private="0" nick="">

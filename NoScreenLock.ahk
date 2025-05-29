@@ -1,7 +1,7 @@
 ; REMOVED: #NoEnv
 #Requires AutoHotkey v2.0
 #SingleInstance Force
-#NoTrayIcon
+; #NoTrayIcon
 Persistent
 ; MsgBox("Screen Lock Disabled, "  2", "ScreenSaver", "")
 CoordMode("Mouse", "Screen")

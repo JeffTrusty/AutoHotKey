@@ -1,0 +1,76 @@
+{
+  "Production": [
+    {
+      "SubMenuName": "App-DB-Cluster",
+      "ActionType": "Clipboard",
+      "ActionValue": "Prod-BOS-DB-CLS"
+    },
+    {
+      "SubMenuName": "Rpt-DB-Cluster",
+      "ActionType": "Clipboard",
+      "ActionValue": "Prod-Rpt-BOS-DB-CLS"
+    },
+    {
+      "SubMenuName": "App-DB-PrimaryNode",
+      "ActionType": "Clipboard",
+      "ActionValue": "wp000081494"
+    },
+    {
+      "SubMenuName": "App-DB-SecondaryNode",
+      "ActionType": "Clipboard",
+      "ActionValue": "wp000081493"
+    },
+    {
+      "SubMenuName": "App-DB-TertiaryNode",
+      "ActionType": "Clipboard",
+      "ActionValue": "wp000081495"
+    },
+    {
+      "SubMenuName": "DocLink Server",
+      "ActionType": "Clipboard",
+      "ActionValue": "wp000060570"
+    },
+    {
+      "SubMenuName": "DocLink OCR Server",
+      "ActionType": "Clipboard",
+      "ActionValue": "wp000060572"
+    }
+  ],
+  "Stage": [
+    {
+      "SubMenuName": "App-DB-Cluster",
+      "ActionType": "Clipboard",
+      "ActionValue": "Prod-BOS-DB-CLS"
+    },
+    {
+      "SubMenuName": "Rpt-DB-Cluster",
+      "ActionType": "Clipboard",
+      "ActionValue": "Prod-Rpt-BOS-DB-CLS"
+    },
+    {
+      "SubMenuName": "App-DB-PrimaryNode",
+      "ActionType": "Clipboard",
+      "ActionValue": "wp000081494"
+    },
+    {
+      "SubMenuName": "App-DB-SecondaryNode",
+      "ActionType": "Clipboard",
+      "ActionValue": "wp000081493"
+    },
+    {
+      "SubMenuName": "App-DB-TertiaryNode",
+      "ActionType": "Clipboard",
+      "ActionValue": "wp000081495"
+    },
+    {
+      "SubMenuName": "DocLink Server",
+      "ActionType": "Clipboard",
+      "ActionValue": "wp000060565"
+    },
+    {
+      "SubMenuName": "DocLink OCR Server",
+      "ActionType": "Clipboard",
+      "ActionValue": "wp000060594"
+    }
+  ]
+}

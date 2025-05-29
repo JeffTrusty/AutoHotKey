@@ -3,8 +3,17 @@
 Persistent ; script will stay running after the auto-execute section (top part of the script) completes
 #SingleInstance Force ; Replaces the old instance of this script automatically
 #UseHook
-InstallKeybdHook()
-SendMode("Input") ; Recommended for new scripts due to its superior speed and reliability
+InstallKeybdHook
+/*
+ * ========================================================================================= *
+ * @author           Jeff Trusty
+ * @version          Dec.20.2024
+ * @copyright        Copyright (c) 2024 Jeff Trusty
+ * @modified         2024-12-20
+ * @description      My AutoHotKey script for home
+ * ========================================================================================= *
+ */
+;SendMode("Input") ; Recommended for new scripts due to its superior speed and reliability
 SetWorkingDir(A_ScriptDir) ; Ensure consistent working dir.
 SetNumLockState("AlwaysOn")
 SetCapsLockState("AlwaysOff")
@@ -12,22 +21,22 @@ SetScrollLockState("AlwaysOff")
 SetTitleMatchMode(2)
 DetectHiddenWindows(true)
 CoordMode("Mouse", "Screen")
-TraySetIcon 'C:\Development\AHK\Jjt Avatar.png'
+TraySetIcon 'C:\Users\jeff_\OneDrive\Development\AHK\Jjt Avatar.png'
 A_crlf := "`r`n"
 
 if !WinExist("NoScreenLock.ahk")
-    Run("C:\Development\AHK\NoScreenLock.ahk")
-if !WinExist("GetActivefilePath.ahk")
-    Run("C:\Development\AHK\GetActivePath\GetActivefilePath.ahk") ; Win-P
-if !WinExist("FlexiFinder.ahk")
-    Run("C:\Development\AHK\FlexiFinder\FlexiFinder.ahk") ; Win-F
+    Run("C:\Users\jeff_\OneDrive\Development\AHK\NoScreenLock.ahk")
+; if !WinExist("GetActivefilePath.ahk")
+;     Run("C:\Users\jeff_\OneDrive\Documents\Development\AHK\GetActivePath\GetActiveFilePath.ahk") ; Win-P
+; if !WinExist("FlexiFinder.ahk")
+;     Run("C:\Users\jeff_\OneDrive\Documents\Development\AHK\FlexiFinder\FlexiFinder.ahk") ; Win-F
 ; if !WinExist("DockWin.ahk")
-;     Run("C:\Development\AHK\Misc\DockWin.ahk")
+;     Run("C:\Users\jeff_\OneDrive\Documents\Development\AHK\Misc\DockWin.ahk")
 ; if !WinExist("AHKScriptHub.ahk")
-;     Run("C:\Development\AHK\Misc\AHKScriptHub.ahk")
+;     Run("C:\Users\jeff_\OneDrive\Documents\Development\AHK\Misc\AHKScriptHub.ahk")
 ; Sleep(2000) ; wait 2 seconds
 ; if !WinExist("AHKHotkeyStringLookup.ahk")
-;     Run("C:\Development\AHK\Misc\AHKHotkeyStringLookup.ahk")
+;     Run("C:\Users\jeff_\OneDrive\Documents\Development\AHK\Misc\AHKHotkeyStringLookup.ahk")
 Variables:
     MSID := "jtrusty"
     PrimaryPassword := "jjt-083731214900"
@@ -64,10 +73,11 @@ Variables:
 
     */
 Mouse_Controls:
+    ^q::
     WheelLeft:: ; Wheel-Left Mouse Button move active window to mouse position
     {
         MouseGetPos &x, &y
-        WinMove(x, y, , , "A")
+        WinMove x, y, , , 'A'
         Return
     }
 
@@ -77,7 +87,7 @@ Mouse_Controls:
         ; Run("C:\Development\AHK\PopupMenu\DisplayPopupMenuV2.ahk")
     }
 
-    ::Wheel-Right::Quick Access PopupQuick Access Popup
+    ; ::Wheel-Right::Quick Access PopupQuick Access Popup
 
 Control_Modifiers:
 
@@ -91,7 +101,6 @@ Control_Modifiers:
         Send("^v")      ; paste what was highlighted
         SendText("]")
         A_Clipboard := oldClip ; Restore the clipboard
-
     }
 
     ; #HotIf WinActive('- Notepad') ; Only run if Notepad
@@ -114,46 +123,43 @@ Control_Modifiers:
         return
     }
 
+    #HotIf WinActive("America First Credit Union")
     ^3:: ;Jeff AFCU login
-    { ; V1toV2: Added bracket
-        If WinActive("America First Credit Union") {
-            Send("{Raw}3422995")
-            Send("{Enter}")
-            Sleep(2000)
-            Send("{Raw}Sun25Day!")
-            Send("{Enter}")
-            Return
-        }
-    } ; V1toV2: Added Bracket before hotkey or Hotstring
+    {
+        Send("{Raw}3422995")
+        Send("{Enter}")
+        Sleep(2000)
+        Send("{Raw}Sun25Day!")
+        Send("{Enter}")
+        Return
+    }
 
     ^4:: ;Sherry AFCU login
-    { ; V1toV2: Added bracket
-        If WinActive("America First Credit Union") {
-            Send(3623840)
-            Send("{Enter}")
-            Sleep(2000)
-            Send("{Raw}tarbaby1")
-            Send("{Enter}")
-            Return
-        }
-    } ; V1toV2: Added Bracket before hotkey or Hotstring
+    {
+        Send(3623840)
+        Send("{Enter}")
+        Sleep(2000)
+        Send("{Raw}tarbaby1")
+        Send("{Enter}")
+        Return
+    }
 
     ^5:: ;Austin AFCU login
-    { ; V1toV2: Added bracket
-        If WinActive("America First Credit Union") {
-            Send(24238511)
-            Send("{Enter}")
-            Sleep(2000)
-            Send("{Raw}5Gjk3WvW77jb65H7w3hMmcCH")
-            Send("{Enter}")
-            Return
-        }
-    } ; V1toV2: Added Bracket before hotkey or Hotstring
+    {
+        Send(24238511)
+        Send("{Enter}")
+        Sleep(2000)
+        Send("{Raw}5Gjk3WvW77jb65H7w3hMmcCH")
+        Send("{Enter}")
+        Return
+    }
+    #HotIf
 
     ^6:: ;BitWarden Password
     {
         send("{Raw}Suddenly706(metal(meat((")
     }
+
     ^0:: ; Reset Ctrl, Alt, Shift state and reload AHK script
     {
         Send("{Alt Up}")
@@ -172,7 +178,8 @@ ControlShift_Modifiers:
         ; If WinActive("'ahk_class dopus.lister") {
         WinMove(500, 0, 1900, 1025, "ahk_class dopus.lister ahk_exe dopus.exe")
         ; }
-        If WinActive('ahk_exe EXCEL.EXE') {
+        If WinActive('ahk_exe EXCEL.EXE')
+        {
             WinMove(1450, 350, 1100, 990, "ahk_exe EXCEL.EXE")
         }
     }
@@ -192,12 +199,12 @@ ControlShift_Modifiers:
         Return
     }
 
-    ^+m:: ; Move active window to mouse position
-    {
-        MouseGetPos(&x, &y)
-        WinMove(x, y, , , "A")
-        Return
-    }
+    ; ^+m:: ; Move active window to mouse position
+    ; {
+    ;     MouseGetPos(&x, &y)
+    ;     WinMove(x, y, , , "A")
+    ;     Return
+    ; }
 
     ^!r:: ; Ctrl-Alt-r run macro recorder
     {
@@ -255,7 +262,7 @@ Windows_Modifiers:
 
     #n:: ;Open Code with Temp file
     {
-        Run("`"C:\Users\jeff_\AppData\Local\Programs\Microsoft VS Code\Code.exe`" c:\Temp\Temp.md")
+        Run("`"C:\Users\jeff_\AppData\Local\Programs\Microsoft VS Code\Code.exe`" C:\Development\AHK\temp.md")
         Return
     }
 
@@ -281,7 +288,7 @@ Windows_W: ; Get currently active window title
     #+F21:: Run("https://www.google.com") ;Search button on lxm-1000
 
     #+s:: MsgBox("`"Snipping Key`"") ; on lxm-1000
-    #Tab:: MsgBox("`"Win+Tab or Next to Snipping Key`"") ; on lxm-1000
+    ; #Tab:: MsgBox("`"Win+Tab or Next to Snipping Key`"") ; on lxm-1000
     ; #l::MsgBox("`"Lock Button`"") ; on lxm-1000
 
 Alt_Modifiers:
@@ -308,36 +315,79 @@ Alt_Modifiers:
     ; https://www.youtube.com/watch?v=oQHz1E7j4i0&t=4s
 
     ;  # = Windows Key, ^ = Ctrl, ! = Alt, < = Left-Alt, > = Right-Alt, + = Shift, & combines mouse and keyboard
+    /* HotString Options:
+        Place options between the first 2 colons followed by the hotstring and 2 more colons
+        * Don't require white-space character to initiate (tab, space, enter)
+        C Case sensitive
+        O Omit ending character
+        R Send RAW. Allows AHK Special characters to be sent (# ^ ! + < >)
+        SE SendEvent
+        SI SendInput
+        SP SendPlay  may allow hotstrings to work in a broader variety of games
+        T  Send Text mode IE each character by character RAW
+        K10 KeyDelay 10ms
+    */
 
-HotStrings:
+HotStrings:  ; In Quick Access Popup in Snippets section
     :*:.s1::-SqlInstance $SQL1
     :*:.s2::-SqlInstance $SQL2
-    :*:@gm::jeff.trusty@gmail.com ; *=don't require a white-space character (tab, space, return)
-    :*:@op::jeff.trusty@optum.com ; *=don't require a white-space character (tab, space, return)
-    :*:@ho::jeff_trusty@hotmail.com ; *=don't require a white-space character (tab, space, return)
-    :*:@cl::console.log(````);{Left}{Left}{Left}
-    :*:jjt::jjt-0837{enter}
-    :*:QAP::Quick Access Popup
-    :SEK10*:/ahk::AutoHotKey ; SE=SendEvent K10=KeyDelay 10ms
-    ::lorem:: ; Jedi Lorem
+    :OSEK10*:@gm::jeff.trusty@gmail.com
+    :OSEK10*:/gm::jeff.trusty@gmail.com
+    ; :*RO:/gm::jeff.trusty@gmail.com
+    ; :*:/gm::
+    ; {
+    ;     Clip := ClipboardAll()
+    ;     A_Clipboard := "jeff.trusty@gmail.com"
+    ;     Send "^v"
+    ;     A_Clipboard := Clip
+    ;     Return
+    ; }
+    ; :*:/op::
+    ; {
+    ;     Clip := ClipboardAll()
+    ;     A_Clipboard := "jeff.trusty@optum.com"
+    ;     Send "^v"
+    ;     A_Clipboard := Clip
+    ;     Return
+    ; }
+    ; :*:/ho::
+    ; {
+    ;     Clip := ClipboardAll()
+    ;     A_Clipboard := "jeff_trusty@hotmail.com"
+    ;     Send "^v"
+    ;     A_Clipboard := Clip
+    ;     Return
+    ; }
+    :*SE:/cl::console.log(````);{Left}{Left}{Left}
+    :*SE:/do::Do I need to take Travis to work today?{Enter}
+    :*SE:/jjt::
     {
-        A_Clipboard := "Remember, a Jedi can feel the Force flowing through him. You mean it controls your actions? Partially. But it also obeys your commands."
+        Clip := ClipboardAll()
+        A_Clipboard := "jjt-0837{enter}"
         Send "^v"
+        A_Clipboard := Clip
         Return
     }
-
-    :R*?:dddd:: ;Today's date
+    :*OSE:/lorem:: ; Jedi Lorem
     {
-        CurrentDateTime := FormatTime(, "MMM-dd-yyyy")
+        Clip := ClipboardAll()
+        A_Clipboard := "Remember, a Jedi can feel the Force flowing through him. You mean it controls your actions? Partially. But it also obeys your commands."
+        Send "^v"
+        A_Clipboard := Clip
+        Return
+    }
+    :*OSE:/ahk::AutoHotKey ; SE=SendEvent K10=KeyDelay 10ms
+    :*OSE:dddd:: ;Today's date
+    {
+        CurrentDateTime := FormatTime(, "MM-dd-yyyy")
         SendInput(CurrentDateTime)
         return
     }
 
-    ; ;:or:j@::jeff.trusty@gmail.com ; place options between the starting colons. o=alltrim of the replacement text, r=don't interprupt special keys (!^#+), *=don't require a white-space Character (tab, space, return)
 
     ::Fav1::VS Code
-    ::Fav2::Azure Data Studio
-    ::Fav3::Edge Browser
+    ::Fav2::Directory Opus
+    ::Fav3::Vivaldi Browser
     ::Ofc-D::OneDrive
     ::Ofc-X::Excel
     ::Ofc-N::VS Code Temp.md
@@ -346,4 +396,41 @@ HotStrings:
     ::Ofc-T::Teams
     ::Ofc-W::Word
     ; ::Alt_F1::Bring up AHK HotString definitions
+
+/* Function to open an application */
+; OpenApp(appPath)
+; {
+;     if !IsSet(appPath) || appPath = ""
+;     {
+;         TrayTip("Error", "Invalid Application Path",2)
+;     }
+;     try
+;     {
+;         if WinExist("ahk_exe " appPath)
+;         {
+;             WinActivate()
+;         }
+;         else
+;         {
+;             switch appPath
+;             {
+;                 case 'Phone Link':
+;                     RunApp(appPath)
+;                 default:
+;                     Run(appPath)
+;             }
+;     } catch Error as e
+;     {
+;         TrayTip("Error"), "Failed to open application: " appPath "`n" e.message,2)
+;     }
+; }
+
+/* Function to run an App Store Application */
+; runApp('Phone Link') ;this will launch Phone Link
+
+runApp(appName)
+{ ; https://www.autohotkey.com/boards/viewtopic.php?p=438517#p438517
+    For app in ComObject('Shell.Application').NameSpace('shell:AppsFolder').Items
+        (app.Name = appName) && RunWait('explorer shell:appsFolder\' app.Path)
+}
 

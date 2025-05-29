@@ -1,0 +1,9 @@
+id	Timestamp	Line Number	Function	Status	Error	File	
+1	20250221093958	2675	Preferences.loadHotkeys	started	none	*#1
+2	20250221093958	2622	Preferences.LoadPreferences	started	none	*#1
+3	20250221093958	2636	Preferences.LoadPreferences	ended	none	*#1
+4	20250221093958	2922	Main.LoadTrayMenu	started	none	*#1
+5	20250221093958	2937	Main.LoadTrayMenu	ended	none	*#1
+6	20250221093958	2697	Preferences.loadHotkeys	ended	none	*#1
+7	20250221093958	3370	Main.LoadMenu	started	none	*#1
+8	20250221093958	3377	GDIPlus.ShutDown	1	Generic Error	*#1

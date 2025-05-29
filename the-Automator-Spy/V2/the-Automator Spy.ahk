@@ -1,8 +1,7 @@
-#Requires Autohotkey v2.0+ 64-Bit
 /*
  * ============================================================================ *
  * Want a clear path for learning AutoHotkey?                                   *
- * Take a look at our AutoHotkey courses here: the-Automator.com/Learn          *
+ * Take a look at our AutoHotkey courses here: the-Automator.com/Discover          *
  * They're structured in a way to make learning AHK EASY                        *
  * And come with a 200% moneyback guarantee so you have NOTHING to risk!        *
  * ============================================================================ *
@@ -11,11 +10,12 @@
 ;Window Spy for AHKv2;
 ;;;;;;;;;;;;;;;;;;;;;;
 #Requires AutoHotkey v2.0
-
 #include <ScriptObj\scriptobj>
+#include <GetBitness>
+#include <RichEdit>
 script := {
 	        base : ScriptObj(),
-	     version : "1.0.0",
+	     version : "1.1.5",
 	      author : "the-Automator",
 	       email : "joe@the-automator.com",
 	     crtdate : "",
@@ -27,7 +27,7 @@ script := {
 	homepagelink : "www.the-automator.com/AutomatorSpy?src=app",
 	  donateLink : "https://www.paypal.com/donate?hosted_button_id=MBT5HSD9G94N6",
 }
-
+DllCall("SetThreadDpiAwarenessContext", "ptr", -4, "ptr") ; get the DPI of the monitor
 ; #NoTrayIcon
 ; When program is in admin mode we cant reload without exiting from menu so, we ignore restarting any other way.
 #SingleInstance Ignore
@@ -92,28 +92,31 @@ WinSpyGui() {
 
 	lv.ModifyCol(1, "Right")
 
-	oGui.Add("Text",'cblue',"Window Title, Class and Process:")
+	oGui.Add("Text",'vCtrl_TitleLabel w360 cblue', Format(txtNumTitle := "WinTitle, Class & Proc:  id: {}, pid: {}", 0, 0))
+	oGui['Ctrl_TitleLabel'].onevent('click',copyidPid)
 	oGui.Add("Checkbox","yp xp+200 w120 Right +hidden vCtrl_FollowMouse","Follow Mouse").Value := 1
-	oGui.Add("Edit","xm w360 r5 ReadOnly -Wrap vCtrl_Title")
-	oGui.Add("Text","w360 cblue vCtrl_CtrlLabel", "Control ClassNN Under Mouse:")
-	oGui.Add("Edit","w360 r15 ReadOnly vCtrl_Ctrl")
+	; oGui.Add("Edit","xm w360 r5 ReadOnly -Wrap vCtrl_Title")
+	oGui.RichEdit := RichEdit(oGui, 'xm w360 r4 ReadOnly -Wrap vCtrl_Title')
+	oGui.RichEdit.WordWrap(true)
+	oGui.Add("Text","w360 cblue vCtrl_CtrlLabel", "Control ClassNN & Text Under Mouse:")
+	oGui.Add("Edit","w360 r17 ReadOnly vCtrl_Ctrl")
 
 	oGui.SetFont('cRed Bold s10', 'Verdana')
-	oGui.Add("Text","cblue xm w360 r1 vCtrl_Freeze",(txtNotFrozen := "(Press Control to update)"))
+	oGui.Add("Text","cblue xm w360 r1 vCtrl_Freeze",(txtNotFrozen := "(Press Right Control to update)"))
 	oGui.SetFont('s9 cBlack w300', "Segoe UI")
 	oGui.Add("Text",'cblue ym vCtrl_HeaderVisText',"Visible Text:")
 	oGui.Add("Edit","w360 r10.1 ReadOnly vCtrl_VisText")
 	oGui.Add("Text","cblue vCtrl_HeaderAllText","All Text:")
-	oGui.Add("Edit","w360 r12 ReadOnly vCtrl_AllText")
+	oGui.Add("Edit","w360 r16 ReadOnly vCtrl_AllText")
 
 	oGui.Add("Text",'cblue vCtrl_SBHdr',"Status Bar Text:")
-	oGui.Add("Edit","w360 r8 ReadOnly vCtrl_SBText")
+	oGui.Add("Edit","w360 r6 ReadOnly vCtrl_SBText")
 	oGui.SetFont('cRed Bold s10', 'Verdana')
 	oGui.Add("Text","w360 vCtrl_AdminCheck")
 	oGui.SetFont('s9 cBlack w300', "Segoe UI")
 
 	SB := oGui.AddStatusBar(,,)
-	SB.SetParts(250)
+	SB.SetParts(50,100, 150)
 	SB.OnEvent('click',SBRead)
 
 	oGui.Show()
@@ -127,10 +130,18 @@ WinSpyGui() {
 
 	oGui.txtNotFrozen := txtNotFrozen       ; create properties for futur use
 	oGui.txtFrozen    := "(Can't self spy! move to other window and try again)"
+	oGui.txtNumTitle  := txtNumTitle
 	; oGui.txtMouseCtrl :=
 	; oGui.txtFocusCtrl := txtFocusCtrl
-
 	; SetTimer Update, 250
+}
+
+copyidPid(ctrl,*)
+{
+	lines := StrSplit(ctrl.value, ':')
+	a_clipboard := 'ahk_id ' RegExReplace(lines[3],'\D') ' ahk_pid ' RegExReplace(lines[4],'\D')
+	tooltip 'Copied to clipboard'
+	settimer tooltip, -2000
 }
 
 WinSpySize(GuiObj, MinMax, Width, Height) {
@@ -152,7 +163,7 @@ WinSpySize(GuiObj, MinMax, Width, Height) {
 		else
 			oGui["Ctrl_" A_LoopField].Move(,,(ctrlW / 2 ))
 	}
-	Highlight.UpdateBorderPos() ; seems to fix the leg issue 
+	Highlight.UpdateBorderPos() ; seems to fix the leg issue
 }
 
 LButtonUp(x*)
@@ -164,7 +175,7 @@ LButtonUp(x*)
 	settimer (*)=>ToolTip(), -2000
 }
 
-~*Ctrl::
+~*RCtrl::
 Update(hk?) { ; timer, no params
 	Try TryUpdate() ; Try
 }
@@ -199,13 +210,15 @@ TryUpdate() {
 	UpdateText("Ctrl_Freeze", oGui.txtNotFrozen)
 	pName := WinGetProcessName(), pPID := WinGetPID()
 
+	UpdateText('Ctrl_TitleLabel', Format(oGui.txtNumTitle, curWin, pPID))
+
 	WinDataText := pTitle "`n" ; ZZZ
 				 . "ahk_class " pClass "`n"
-				 . "ahk_exe " pName "`n"
-				 . "ahk_pid " pPID "`n"
-				 . "ahk_id " curWin
+				 . "ahk_exe " pName
+				;  . "ahk_pid " pPID "`n"
+				;  . "ahk_id " curWin
 
-	UpdateText("Ctrl_Title", WinDataText)
+	UpdateRichText("Ctrl_Title", WinDataText)
 	CoordMode "Mouse", "Window"
 	MouseGetPos &mrX, &mrY
 	CoordMode "Mouse", "Client"
@@ -225,11 +238,12 @@ TryUpdate() {
 		   , "ptr", hMon     ; [in]  HMONITOR            hMon,
 		   , "ptr*", &pScale:=0) ; [out] DEVICE_SCALE_FACTOR *pScale
 
-	pScale /= (A_ScreenDPI / 96) * 100.0
+	; pScale := Round((A_ScreenDPI / 96 * 100 ),0)
+	pScale := Round((getCurrentDPIByMouse() / 96 * 100 ),0)
 
 
-	SB.SetText("Color: " mClr " (Red=" SubStr(mClr, 1, 2) " Green=" SubStr(mClr, 3, 2) " Blue=" SubStr(mClr, 5) ")")
-	SB.SetText( 'Current DPI: ' pScale * 100 "%",2)
+	SB.SetText(" Color: " mClr " (Red=" SubStr(mClr, 1, 2) " Green=" SubStr(mClr, 3, 2) " Blue=" SubStr(mClr, 5) ") ", 4)
+	SB.SetText( '`tCurrent DPI: ' pScale "%",3)
 	;SB.Opt('c' mClr)
 	; UpdateText("Ctrl_CtrlLabel", (Ctrl_FollowMouse ? oGui.txtMouseCtrl : oGui.txtFocusCtrl) ":")
 
@@ -271,8 +285,10 @@ TryUpdate() {
 	Loop {
 		ovi := ""
 		Try ovi := StatusBarGetText(A_Index)
-		if (ovi = "")
+		catch
 			break
+		if (ovi = "")
+			continue
 		sbTxt .= "(" A_Index "): " Trim(ovi, ' `t') '`n' ; textMangle() "`n"
 	}
 
@@ -293,10 +309,25 @@ TryUpdate() {
 	;if AdminProcesses.Has(t4)
 	IsElevated := IsProcessElevated(pPID)
 
+	if isVirtual := isVirtualProcess(curWin,pPID)
+	{
+		oGui['Ctrl_AdminCheck'].opt('cff7b00')
+		UpdateText('Ctrl_AdminCheck', 'Virtual Window')
+	}
+	else if isBrowserProcess(pPid)
+	{
+		oGui['Ctrl_AdminCheck'].opt('cff00dc')
+		UpdateText('Ctrl_AdminCheck', 'Browser')
+		
+	}
+	else
+	{
+		oGui['Ctrl_AdminCheck'].opt('c' (IsElevated ? 'Red' : 'Blue'))
+		UpdateText('Ctrl_AdminCheck', IsElevated ? 'Admin Process: ' pName : 'Normal Process')
+	}
 	oGui['Ctrl_Freeze'].opt('c' (IsElevated ? 'Red' : 'Blue'))
-	oGui['Ctrl_AdminCheck'].opt('c' (IsElevated ? 'Red' : 'Blue'))
-	UpdateText('Ctrl_AdminCheck', IsElevated ? 'Admin Process: ' pName : 'Normal Process')
-	UpdateText('Ctrl_Freeze', IsElevated ? 'Press Control when ' pName ' is not Active' : '(Press Control to update)')
+	UpdateText('Ctrl_Freeze', IsElevated ? 'RCtrl when ' pName ' inactive' : '(Press Right Control to update)')
+
 	UpdateText("Ctrl_Ctrl", cText)
 	UpdateText("Ctrl_SBText", sbTxt)
 	UpdateText("Ctrl_VisText", ovVisText)
@@ -309,6 +340,12 @@ TryUpdate() {
 		else
 			lv.ModifyCol(A_Index, 'AutoHDR')
 	}
+	processpath := WinGetProcessPath('ahk_pid' pPID)
+	SB.SetText('`t' CheckExeBitness(processpath),1)
+		if CheckWin32Control(ControlGetClassNN(msCtrl))
+		SB.SetText('`tWin32 Control',2)
+	else
+		SB.SetText('',2)
 }
 
 ; ===========================================================================================
@@ -353,6 +390,66 @@ UpdateText(vCtl, NewText) {
 	}
 }
 
+UpdateRichText(vCtl, WinDataText)
+{
+	richtext := formatRich(WinDataText)
+
+	oGui.RichEdit.SetText('{\rtf1{\colortbl`s;\red210\green10\blue10;}\fs20 ' richtext '}')
+}
+
+formatRich(WinDataText)
+{
+	text := ''
+	for line  in StrSplit(WinDataText,'`n','`r')
+	{
+		if A_Index != 1 && A_Index != 3
+		{
+			text .= line '\par '
+			continue
+		}
+
+		last1 := last2 := last3 := ''
+		chars := StrSplit(line)
+		for char in chars
+		{
+			if !char || char = last1 || char = last2 || char = last3
+			{
+				last1 := last2 := last3 := ''
+				continue
+			}
+
+			ord_char := Ord(char)
+			firstByte := NumGet(StrPtr(char), 1, 'UChar')
+			OutputDebug 'char: ' Format('{:#x}', ord_char) ' - byte: ' Format('{:#x}', firstByte)
+			if (firstByte > 0x00 && firstByte <= 0x7F) ;  Single-byte character (ASCII)
+				text .= '\b\highlight1 ' char ' \b0\highlight0'
+			else if (firstByte >= 0xC0 && firstByte <= 0xDF) ;  Start of a 2-byte character
+			{
+				last1 := chars[A_Index+1]
+				text .= '\b\highlight1 ' char chars[A_Index+1] ' \b0\highlight0'
+			}
+			else if (firstByte >= 0xE0 && firstByte <= 0xEF) ;  Start of a 3-byte character
+			{
+				last1 := chars[A_Index+1]
+				last2 := chars[A_Index+2]
+				text .= '\b\highlight1 ' char chars[A_Index+1] chars[A_Index+2] ' \b0\highlight0'
+			}
+			else if (firstByte >= 0xF0 && firstByte <= 0xF7) ;  Start of a 4-byte character
+			{
+				last1 := chars[A_Index+1]
+				last2 := chars[A_Index+2]
+				last3 := chars[A_Index+3]
+				text .= '\b\highlight1 ' char chars[A_Index+1] chars[A_Index+2] chars[A_Index+3] ' \b0\highlight0'
+			}
+			else
+				text .= char
+		}
+		text .= '\par '
+	}
+
+	return RTrim(text, '\par ')
+}
+
 textMangle(x) {
 	elli := false
 	if (pos := InStr(x, "`n"))
@@ -395,8 +492,8 @@ CopyPosition(obj,row)
 	|| yPos = ''
 		return
 
-	if !GetKeyState('Shift')
-	|| relative_to != last_relative
+	if ((!obj.type != 'manual' && !GetKeyState('Shift'))
+	|| relative_to != last_relative)
 		A_Clipboard := ''
 
 	last_relative := relative_to
@@ -407,6 +504,17 @@ CopyPosition(obj,row)
 	SetTimer (*)=>ToolTip(), -2000
 }
 
+#HotIf oGui.RichEdit.Focused
+^c::
+{
+	A_Clipboard := ''
+	Send '^c'
+	ClipWait 1
+
+	ToolTip A_Clipboard := '"' Trim(RegExReplace(A_Clipboard, '\R', '  ')) '"'
+	SetTimer ToolTip, -2000
+}
+#HotIf
 
 ^+w::oGui.Show('NA Restore')
 
@@ -437,7 +545,7 @@ CheckforAdmin()
 	catch
 		return
 
-	OutputDebug A_ThisFunc '> Getting pid: ' pid
+	; OutputDebug A_ThisFunc '> Getting pid: ' pid
 	pName := StrTitle(ProcessGetName(pid))
 	if IsProcessElevated(Pid)
 	&& !A_IsAdmin
@@ -450,8 +558,8 @@ CheckforAdmin()
 		{
 			oGui.Show()
 			oGui['Ctrl_Freeze'].opt('cRed')
-			oGui['Ctrl_Freeze'].value := oGui.txtNotFrozen := 'Press Control when ' pName ' is not Active'
-			OutputDebug 'Creating border for non elevated pid: ' pid
+			oGui['Ctrl_Freeze'].value := oGui.txtNotFrozen := 'Press Right Control when ' pName ' is not Active'
+			; OutputDebug 'Creating border for non elevated pid: ' pid
 			Highlight.Border('ahk_pid' pid)
 		}
 		else
@@ -462,15 +570,34 @@ CheckforAdmin()
 	}
 	else if IsProcessElevated(Pid)
 	{
-		OutputDebug 'Creating border for elevated pid: ' pid
+		; OutputDebug 'Creating border for elevated pid: ' pid
 		Highlight.Border('ahk_pid' pid)
 	}
 	else if !Highlight.marked.Has(WinGetID('ahk_pid' pid))
 	{
-		OutputDebug A_ThisFunc '> if statement > Didnt find pid in marked: ' pid
+		; OutputDebug A_ThisFunc '> if statement > Didnt find pid in marked: ' pid
 		oGui['Ctrl_Freeze'].opt('cBlue')
-		oGui['Ctrl_Freeze'].value := oGui.txtNotFrozen := '(Press Control to update)'
+		oGui['Ctrl_Freeze'].value := oGui.txtNotFrozen := '(Press Right Control to update)'
 	}
+}
+
+isVirtualProcess(iHwnd,pid)
+{
+    wTitle := WinGetTitle('ahk_id' iHwnd)
+    if wTitle ~= 'Zoom Workplace|TeamViewer'
+        return true
+    procName := ProcessGetName(pid)
+    if procName ~= 'WindowsSandboxClient.exe|msteams.exe|msteams.exe|Zoom.exe|vmware.exe|vmware-vmx.exe|VirtualBoxVM.exe|vmconnect.exe|mstsc.exe|wfica32.exe|CDViewer.exe|atmgr.exe'
+        return true
+    return false
+}
+
+isBrowserProcess(pid)
+{
+    procName := ProcessGetName(pid)
+    if procName ~= 'chrome.exe|firefox.exe|msedge.exe|iexplore.exe|safari.exe|opera.exe|brave.exe|vivaldi.exe|epiphany.exe|midori.exe|seamonkey.exe'
+        return true
+    return false
 }
 
 ; =============================================================================================================================================================
@@ -554,7 +681,7 @@ class Border extends Highlight {
 		Highlight.marked.Set(border.parent, true)
 		; we should use Shell Hook instead Timmer
 		; onmessage when window moved and destroyed
-		SetTimer UpdateBorderPos, 5 
+		SetTimer UpdateBorderPos, 5
 		return this
 
 		UpdateBorderPos()
@@ -582,4 +709,91 @@ class Border extends Highlight {
 			border.Move(x, y-2, w, h)
 		}
 	}
+}
+
+
+CheckWin32Control(ClassNN)
+{
+	if InStr(controlslist, RegExReplace(ClassNN,"\d+$"))
+		return true
+	return false
+}
+
+
+controlslist :=
+(
+"Button
+SysListView32
+SysTreeView
+SysHeader32
+Static
+Edit
+ComboBox
+msctls_hotkey32
+SysMonthCal32
+SysDateTimePick32
+msctls_statusbar32
+msctls_progress
+Scroll Bar
+msctls_trackbar
+msctls_updown32
+SYSLINK
+SysTabControl
+ToolbarWindow32
+RICHEDIT
+RICHEDIT20A
+RICHEDIT20W
+SysIPAddress32"
+)
+
+getCurrentDPIByMouse()
+{
+	Mons :=EnumMonitors()
+	CoordMode("Mouse","Screen")
+	MouseGetPos(&mx,&my)
+	Loop MonitorGetCount()
+	{
+		MonitorGet(a_index, &Left, &Top, &Right, &Bottom)
+		if (Left <= mx && mx <= Right && Top <= my && my <= Bottom)
+		{
+			return GetDpiForMonitor(Mons[a_index]).x
+		}
+	}
+	Return 1
+}
+
+
+/**
+ * @author Descolada (main v2 author)
+ * @author OvercastBTC (mod)
+ * @author justme (original v1 author)
+ * @author iPhilip (v1 mod)
+ * @param EnumMonitors 
+ */
+WinGetDpi(WinTitle?, WinText?, ExcludeTitle?, ExcludeText?) {
+    hMonitor := DllCall("MonitorFromWindow", "ptr", WinExist(WinTitle?, WinText?, ExcludeTitle?, ExcludeText?), "int", 2, "ptr") ; MONITOR_DEFAULTTONEAREST
+	DllCall("Shcore.dll\GetDpiForMonitor", "ptr", hMonitor, "int", 0, "uint*", &dpiX:=0, "uint*", &dpiY:=0)
+	return dpiX
+}
+
+
+EnumMonitors() {
+	static EnumProc := CallbackCreate(MonitorEnumProc)
+	Monitors := []
+	return DllCall("User32\EnumDisplayMonitors", "Ptr", 0, "Ptr", 0, "Ptr", EnumProc, "Ptr", ObjPtr(Monitors), "Int") ? Monitors : false
+}
+
+MonitorEnumProc(hMonitor, hDC, pRECT, ObjectAddr) {
+	Monitors := ObjFromPtrAddRef(ObjectAddr)
+	Monitors.Push(hMonitor)
+	return true
+}
+
+GetDpiForMonitor(hMonitor, Monitor_Dpi_Type := 0) {  ; MDT_EFFECTIVE_DPI = 0 (shellscalingapi.h)
+	if !DllCall("Shcore\GetDpiForMonitor", "Ptr", hMonitor, "UInt", Monitor_Dpi_Type, "UInt*", &dpiX:=0, "UInt*", &dpiY:=0, "UInt")
+		return {x:dpiX, y:dpiY}
+}
+
+GetDpiForWindow(hwnd) {
+	return DllCall("User32\GetDpiForWindow", "Ptr", hwnd, "UInt")
 }
